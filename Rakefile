@@ -9,5 +9,6 @@ namespace :scraper do
   task :cache_and_process do
     #Scraper::Content.fetch
     Scraper::Parser.new.process
+    puts "Updated data/schedule.json"
   end
 end

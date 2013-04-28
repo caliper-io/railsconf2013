@@ -2,6 +2,7 @@ require 'pry'
 require 'net/http'
 require 'nokogiri'
 require 'time'
+require 'oj'
 
 module Scraper
   PAGES = {
@@ -106,15 +107,15 @@ module Scraper
             end
           end
         end
-
-        break #TODO: Just process one for now
       end
 
       generate_json
     end
 
     def generate_json
-      binding.pry
+      File.open(File.expand_path("../../data/schedule.json", __FILE__), "w") do |f|
+       f.write Oj.dump(self.parsed_talks.values)
+      end
     end
 
     def found_timeslot?
@@ -125,8 +126,8 @@ module Scraper
       return if timeslot_range_string.empty?
       time_range = timeslot_range_string.strip.split("-")
       self.current_timeslot = {
-        starting_at: Time.parse(DATES[day] + " " + time_range[0]),
-        ending_at: Time.parse(DATES[day] + " " + time_range[1])
+        starting_at: Time.parse(DATES[day] + " " + time_range[0]).to_i*1000,
+        ending_at: Time.parse(DATES[day] + " " + time_range[1]).to_i*1000
       }
     end
 
