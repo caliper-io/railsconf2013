@@ -64,13 +64,13 @@ module Scraper
       talks_doc.css(".talk").each do |e|
         uid = e.attribute("id").value;
         parsed_talks[uid] = {
-          description: e.css("p").to_xml,
-          title: e.css("h4").inner_text,
-          speaker: {
-            name: e.css("h6").inner_text,
-            description: self.speakers[e.css("h6 a").attribute("href").value.split("#")[1] ] # lookup by h6 a href
+          "description" => e.css("p").to_xml,
+          "title" => e.css("h4").inner_text,
+          "speaker" => {
+            "name" => e.css("h6").inner_text,
+            "description" => self.speakers[e.css("h6 a").attribute("href").value.split("#")[1] ] # lookup by h6 a href
            },
-           uid: uid
+           "uid" => uid
         }
       end
 
@@ -92,15 +92,15 @@ module Scraper
 
               # parse out location - set time to merge hash later...
               talk = {
-                location: slot_e.css("h4").inner_text,
+                "location" => slot_e.css("h4").inner_text,
               }.merge(self.current_timeslot)
 
               if talk_link.inner_text.empty?
                 # must be keynote or other note, therefore add limited information
-                talk[:title] = slot_e.css("h5").inner_text
-                talk[:description] = slot_e.css("p").inner_text
-                uid = talk[:title]+talk[:starting_at].to_s
-                talk[:uid] = uid
+                talk["title"] = slot_e.css("h5").inner_text
+                talk["description"] = slot_e.css("p").inner_text
+                uid = talk["title"]+talk[:starting_at].to_s
+                talk["uid"] = uid
 
                 parsed_talks[uid] = talk
               else
@@ -113,12 +113,12 @@ module Scraper
         end
       end
 
-      generate_json
+      generate_js
     end
 
-    def generate_json
-      File.open(File.expand_path("../../data/schedule.json", __FILE__), "w") do |f|
-       f.write Oj.dump(self.parsed_talks.values)
+    def generate_js
+      File.open(File.expand_path("../../data/schedule.js", __FILE__), "w") do |f|
+       f.write "var schedule = #{Oj.dump(self.parsed_talks.values)};"
       end
     end
 
