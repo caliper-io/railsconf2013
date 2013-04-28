@@ -62,13 +62,15 @@ module Scraper
       )
 
       talks_doc.css(".talk").each do |e|
-        parsed_talks[e.attribute("id").value] = {
+        uid = e.attribute("id").value;
+        parsed_talks[uid] = {
           description: e.css("p").to_xml,
           title: e.css("h4").inner_text,
           speaker: {
             name: e.css("h6").inner_text,
             description: self.speakers[e.css("h6 a").attribute("href").value.split("#")[1] ] # lookup by h6 a href
-           }
+           },
+           uid: uid
         }
       end
 
@@ -97,8 +99,10 @@ module Scraper
                 # must be keynote or other note, therefore add limited information
                 talk[:title] = slot_e.css("h5").inner_text
                 talk[:description] = slot_e.css("p").inner_text
+                uid = talk[:title]+talk[:starting_at].to_s
+                talk[:uid] = uid
 
-                parsed_talks[talk[:description]+talk[:starting_at].to_s] = talk
+                parsed_talks[uid] = talk
               else
                 # find existing parsed talk
                 talk_uid = talk_link.attribute("href").value.split("#")[1]
