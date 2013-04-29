@@ -188,10 +188,10 @@
         $("body").append(toRender);
 
         // adding to see if we fix a wierd issue when pages don't show
-        setTimeout(10, function() {
+        setTimeout(function() {
           $.mobile.navigate(id);
           window.scrollTo(0, oldY);
-        });
+        },10);
 
         return false;
       }).on('click', '.star-btn', function(e){
