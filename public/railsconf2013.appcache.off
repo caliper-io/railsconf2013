@@ -1,8 +1,8 @@
 CACHE MANIFEST
 # v1 - 2013-04-28 14:29
 index.html
-jquery.mobile.custom.structure.css
-jquery.mobile.custom.theme.css
+jquery.mobile.custom.structure.min.css
+jquery.mobile.custom.theme.min.css
 custom.css
 jquery-1.9.1.min.js
 jquery.mobile.custom.min.js
