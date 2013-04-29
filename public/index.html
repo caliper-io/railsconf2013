@@ -54,7 +54,7 @@
   <script id="session-details-template" type="text/x-handlebars-template">
     <div data-role="page" id="{{ talk.uid }}" class="session-page">
       <div data-role="header" data-id="main-nav" data-position="fixed" style="overflow:hidden;">
-        <a data-role="button" data-theme="a" data-direction="reverse" data-transition="slide" href="#home" data-icon="arrow-l" class="ui-btn-left">Back</a>
+        <a data-role="button" data-theme="a" href="#home" data-icon="arrow-l" class="ui-btn-left">Back</a>
         <h1>RailsConf 2013</h1>
       </div>
       <div data-role="content">
@@ -179,20 +179,8 @@
       renderDayList(29);
       renderSessionDetailsPages();
 
-      $.mobile.defaultPageTransition = 'slide';
 
-      $(document).on('click', '.session-show', function(e){
-        e.preventDefault();
-
-        var id = $(this).attr('href');
-
-        var oldY = window.scrollY;
-
-        $.mobile.navigate(id);
-        window.scrollTo(0, oldY);
-
-        return false;
-      }).on('click', '.star-btn', function(e){
+      $(document).on('click', '.star-btn', function(e){
         e.preventDefault();
 
         var $li = $(this).parent();
