@@ -99,7 +99,7 @@ module Scraper
                 # must be keynote or other note, therefore add limited information
                 talk["title"] = slot_e.css("h5").inner_text
                 talk["description"] = slot_e.css("p").inner_text
-                uid = talk["title"]+talk[:starting_at].to_s
+                uid = talk["title"][0,2] + talk["starting_at"].to_s
                 talk["uid"] = uid
 
                 parsed_talks[uid] = talk
@@ -117,8 +117,9 @@ module Scraper
     end
 
     def generate_js
+      to_output = self.parsed_talks.values.reject {|v| v["starting_at"].nil? }.sort_by {|v| v["starting_at"] }
       File.open(File.expand_path("../../data/schedule.js", __FILE__), "w") do |f|
-       f.write "var schedule = #{Oj.dump(self.parsed_talks.values)};"
+       f.write "var schedule = #{Oj.dump(to_output)};"
       end
     end
 
@@ -130,8 +131,8 @@ module Scraper
       return if timeslot_range_string.empty?
       time_range = timeslot_range_string.strip.split("-")
       self.current_timeslot = {
-        starting_at: Time.parse(DATES[day] + " " + time_range[0]).to_i*1000,
-        ending_at: Time.parse(DATES[day] + " " + time_range[1]).to_i*1000
+        "starting_at" => Time.parse(DATES[day] + " " + time_range[0]).to_i*1000,
+        "ending_at" => Time.parse(DATES[day] + " " + time_range[1]).to_i*1000
       }
     end
 
