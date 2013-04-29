@@ -43,3 +43,14 @@ li.list-row a.ui-li-link-alt {
     display: inline;
   }
 }
+
+.star-btn * {
+  border: none !important;
+  border-radius: 0 !important;
+  text-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  opacity: 0.6;
+}
