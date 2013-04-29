@@ -40,14 +40,14 @@
   </script>
 
   <script id="entry-list-template" type="text/x-handlebars-template">
-    <li class="list-row" id="{{ uid }}">
+    <li data-talk-id="{{ uid }}" class="{{#if stared}}stared{{/if}} list-row">
       <a class="session-show" href="#{{ uid }}">
         <h2 class="session-title">{{ title }}</h2>
         <p class="session-speaker">{{ speaker.name }}</p>
         <p class="session-venue">Venue: {{ location }}</p>
         <p class="session-venue ui-li-aside">{{ location }}</p>
       </a>
-      <a href="#" class="ui-icon-alt"></a>
+      <a href="#" class="ui-icon-alt star-btn"></a>
     </li>
   </script>
 
@@ -80,10 +80,58 @@
     var talkDividerExample = Handlebars.compile($("#talk-divider-template").html());
     var sessionDetailsTemplate = Handlebars.compile($("#session-details-template").html());
 
+    var getStared = function(){
+      if(typeof window._stared === 'undefined'){
+        window._stared = {};
+
+        if(window.localStorage){
+          var s = (window.localStorage.getItem('stared') || '').split(',');
+
+          for(var i=0;i<s.length;i++){
+            if(s[i].length){
+              window._stared[s[i]] = true;
+            }
+          }
+        }
+      }
+
+      return window._stared;
+    };
+
+    var saveStared = function(){
+      if(typeof window._stared === 'object' && window.localStorage){
+        var s = [];
+
+        for(var item in window._stared){
+          if(window._stared.hasOwnProperty(item) && window._stared[item]){
+            s.push(item);
+          }
+        }
+
+        window.localStorage.setItem('stared', s.join(','));
+      }
+    };
+
+    var star = function(item){
+      getStared();
+      _stared[String(item)] = true;
+      saveStared();
+    };
+
+    var unstar = function(item){
+      getStared();
+      _stared[String(item)] = false;
+      saveStared();
+    };
+
     var renderDayList = function(day) {
-      $("#talks li").remove();
+      $("#talks").empty();
+
       var timerange;
+
       $.each(schedule, function(i, obj) {
+        obj.stared = getStared()[obj.uid];
+
         // only draw those for the selected date (Day)
         var s = new Date(obj.starting_at);
         if (s.getDate() != day) {
@@ -144,6 +192,22 @@
           $.mobile.navigate(id);
           window.scrollTo(0, oldY);
         });
+
+        return false;
+      }).on('click', '.star-btn', function(e){
+        e.preventDefault();
+
+        var $li = $(this).parent();
+
+        var talk_id = $li.data('talk-id');
+
+        if(getStared()[talk_id]){
+          unstar(talk_id);
+          $li.removeClass('stared');
+        }else{
+          star(talk_id);
+          $li.addClass('stared');
+        }
 
         return false;
       });
