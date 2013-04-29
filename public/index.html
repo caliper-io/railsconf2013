@@ -153,14 +153,6 @@
       $("#talks").listview('refresh');
     };
 
-    //var findTalk = function(uid) {
-    //  for (var a = 0; a < schedule.length; a++) {
-    //    if (schedule[a].uid == uid) {
-    //      return schedule[a];
-    //    }
-    //  }
-    //};
-
     var renderSessionDetailsPages = function() {
       $.each(schedule, function(i, talk) {
         var s = new Date(talk.starting_at).toString();

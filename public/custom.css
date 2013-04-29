@@ -54,3 +54,11 @@ li.list-row a.ui-li-link-alt {
   background-color: transparent !important;
   opacity: 0.6;
 }
+
+.star-btn .ui-btn-inner .ui-btn {
+  background: none !important;
+}
+
+.stared .star-btn * {
+  opacity: 1.0 !important;
+}
