@@ -30,6 +30,15 @@ li.list-row a.ui-li-link-alt {
   font-size:font-size: 15px;
 }
 
+.our-footer a {
+  font-size:12px;
+  font-weight:normal;
+  padding:7px 15px;
+  color: rgba(255,255,255,0.7)!important;
+  text-decoration:none;
+  display:block;
+}
+
 @media (min-width: 480px) {
   .ui-li-aside {
     width: 20%;
