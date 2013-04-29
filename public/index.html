@@ -33,9 +33,6 @@
     </div>
   </div>
 
-  <div data-role="page" id="session">
-  </div>
-
   <script id="talk-divider-template" type="text/x-handlebars-template">
     <li data-role="list-divider">{{ starting_at }} - {{ ending_at }}</li>
   </script>
@@ -123,11 +120,18 @@
 
         var id = $(this).attr('href');
 
-        $("body").append(sessionDetailsTemplate( findTalk(id.substr(1)) ));
+        var talk = findTalk(id.substr(1))
+
+        var oldY = window.scrollY;
+
+        $('.session-page').remove();
+        $('body').append(sessionDetailsTemplate(talk));
 
         $.mobile.navigate(id);
 
-       return false;
+        window.scrollTo(0, oldY);
+
+        return false;
       });
 
     });
