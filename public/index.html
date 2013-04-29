@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RailsConf 2013</title>
+  <link rel="stylesheet" href="jquery.mobile.custom.structure.css">
+  <link rel="stylesheet" href="jquery.mobile.custom.theme.css">
+  <link rel="stylesheet" href="custom.css">
+  <script src="jquery-1.9.1.js"></script>
+  <script src="jquery.mobile.custom.js"></script>
+  <script src="handlebars-1.0.0.rc.2.js"></script>
+  <script src="data/schedule.js"></script>
+</head>
+<body>
+  <div data-role="page" id="home">
+    <div data-role="header" data-id="main-nav" data-position="fixed">
+      <h1>RailsConf 2013</h1>
+    </div>
+    <div data-role="header">
+      <div data-role="navbar" style="overflow:hidden;">
+        <ul>
+          <li><a href="#" class="ui-btn-active" onClick="renderDayList(29);">Mon 4/29</a></li>
+          <li><a href="#" onClick="renderDayList(30);">Tue 4/30</a></li>
+          <li><a href="#" onClick="renderDayList(1);">Wed 5/1</a></li>
+          <li><a href="#" onClick="renderDayList(2);">Thu 5/2</a></li>
+        </ul>
+      </div>
+    </div>
+    <div data-role="content">
+      <ul id="talks" data-role="listview" data-split-theme="c" data-split-icon="star">
+      </ul>
+    </div>
+  </div>
+
+  <div data-role="page" id="session">
+  </div>
+
+  <script id="talk-divider-template" type="text/x-handlebars-template">
+    <li data-role="list-divider">{{ starting_at }} - {{ ending_at }}</li>
+  </script>
+
+  <script id="entry-list-template" type="text/x-handlebars-template">
+    <li class="list-row" id="{{ uid }}">
+      <a class="session-show" href="#{{ uid }}">
+        <h2 class="session-title">{{ title }}</h2>
+        <p class="session-speaker">{{ speaker.name }}</p>
+        <p class="session-venue">Venue: {{ location }}</p>
+        <p class="session-venue ui-li-aside">{{ location }}</p>
+      </a>
+      <a href="#" class="ui-icon-alt"></a>
+    </li>
+  </script>
+
+  <script id="session-details-template" type="text/x-handlebars-template">
+    <div data-role="page" id="{{ uid }}" class="session-page">
+      <div data-role="header" data-id="main-nav" data-position="fixed" style="overflow:hidden;">
+        <a data-role="button" data-theme="a" data-direction="reverse" data-transition="slide" href="#home" data-icon="arrow-l" class="ui-btn-left">Back</a>
+        <h1>RailsConf 2013</h1>
+      </div>
+      <div data-role="content">
+        <h4>{{starting_at}} - {{ending_at}} {{location}}</h4>
+        <h2>{{title}}</h2>
+        <p><strong>{{ speaker.name }}</strong></p>
+
+        <div>
+          {{{ description  }}}
+        </div>
+
+        <div>
+          <h3>About the speaker</h3>
+          {{{ speaker.description }}}
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script>
+    var entryListTemplate = Handlebars.compile($("#entry-list-template").html());
+    var talkDividerExample = Handlebars.compile($("#talk-divider-template").html());
+    var sessionDetailsTemplate = Handlebars.compile($("#session-details-template").html());
+
+    var renderDayList = function(day) {
+      $("#talks li").remove();
+      var timerange;
+      $.each(schedule, function(i, obj) {
+        // only draw those for the selected date (Day)
+        var s = new Date(obj.starting_at);
+        if (s.getDate() != day) {
+          return true;
+        }
+        // check if we need a time divider
+        if (timerange == undefined || timerange != obj.starting_at) {
+          var s = new Date(obj.starting_at).toString();
+          var e = new Date(obj.ending_at).toString();
+          $("#talks").append(talkDividerExample({
+            starting_at: s.match(/2013 (\d{2}:\d{2})/)[1],
+            ending_at: e.match(/2013 (\d{2}:\d{2})/)[1]
+          }));
+          timerange = obj.starting_at;
+        }
+        // Add talk information
+        $("#talks").append(entryListTemplate(obj));
+      });
+      $("#talks").listview('refresh');
+    };
+
+    var findTalk = function(uid) {
+      for (var a = 0; a < schedule.length; a++) {
+        if (schedule[a].uid == uid) {
+          return schedule[a];
+        }
+      }
+    };
+
+    $(document).ready(function() {
+      renderDayList(29);
+
+      $.mobile.defaultPageTransition = 'slide';
+
+      $(document).on('click', '.session-show', function(e){
+        e.preventDefault();
+
+        var id = $(this).attr('href');
+
+        $("body").append(sessionDetailsTemplate( findTalk(id.substr(1)) ));
+
+        $.mobile.navigate(id);
+
+       return false;
+      });
+
+    });
+  </script>
+
+</body>
+</html>

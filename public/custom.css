@@ -1,0 +1,35 @@
+li.list-row {
+  border-top: 0;
+}
+
+li.list-row a.ui-li-link-alt {
+  border-top: 0;
+  right: -1px;
+}
+
+.session-speaker {
+  font-weight: bold;
+}
+
+.session-venue {
+  display: inline;
+}
+
+.session-venue.ui-li-aside {
+  display: none;
+  font-weight: bold;
+}
+
+@media (min-width: 480px) {
+  .ui-li-aside {
+    width: 20%;
+  }
+
+  .session-venue {
+    display: none;
+  }
+
+  .session-venue.ui-li-aside {
+    display: inline;
+  }
+}

@@ -118,7 +118,7 @@ module Scraper
 
     def generate_js
       to_output = self.parsed_talks.values.reject {|v| v["starting_at"].nil? }.sort_by {|v| v["starting_at"] }
-      File.open(File.expand_path("../../data/schedule.js", __FILE__), "w") do |f|
+      File.open(File.expand_path("../../public/data/schedule.js", __FILE__), "w") do |f|
        f.write "var schedule = #{Oj.dump(to_output)};"
       end
     end
