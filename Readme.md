@@ -9,7 +9,7 @@ up the schedule on our mobile devices.
 
 ## Development
 
-This has been written in PDD (Pry driven development), so no tests here.
+This has been written in <del>PDD (Pry driven development)</del> TDD (train driven development), so no tests here.
 
 We have a master branch on this project that creates the cached JSON
 data structure of the talks and speakers, you can access the latest
