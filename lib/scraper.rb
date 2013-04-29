@@ -96,9 +96,11 @@ module Scraper
               }.merge(self.current_timeslot)
 
               if talk_link.inner_text.empty?
+                speaker_name = slot_e.css("p").inner_text
                 # must be keynote or other note, therefore add limited information
                 talk["title"] = slot_e.css("h5").inner_text
-                talk["description"] = slot_e.css("p").inner_text
+                talk["description"] = speaker_name
+                talk["speaker"] = { "name" => speaker_name }
                 uid = talk["title"][0,2] + talk["starting_at"].to_s
                 talk["uid"] = uid
 
