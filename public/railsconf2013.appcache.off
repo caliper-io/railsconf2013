@@ -4,8 +4,8 @@ index.html
 jquery.mobile.custom.structure.css
 jquery.mobile.custom.theme.css
 custom.css
-jquery-1.9.1.js
-jquery.mobile.custom.js
+jquery-1.9.1.min.js
+jquery.mobile.custom.min.js
 handlebars-1.0.0.rc.2.js
 data/schedule.js
 images/ajax-loader.gif
