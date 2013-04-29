@@ -139,9 +139,11 @@
 
         $("body").append(toRender);
 
-        $.mobile.navigate(id);
-
-        window.scrollTo(0, oldY);
+        // adding to see if we fix a wierd issue when pages don't show
+        setTimeout(10, function() {
+          $.mobile.navigate(id);
+          window.scrollTo(0, oldY);
+        });
 
         return false;
       });
