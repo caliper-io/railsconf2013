@@ -12,4 +12,7 @@ rm -r cached-download
 rm -r lib
 mv public/* .
 rm -r public
+git add .
+git add -u .
 git commit -m "Deploy version of the app"
+git push -f origin gh-pages
