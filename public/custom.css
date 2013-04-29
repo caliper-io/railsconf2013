@@ -20,6 +20,16 @@ li.list-row a.ui-li-link-alt {
   font-weight: bold;
 }
 
+/* Session Page */
+.session-page h2, .session-page h4, .session-page h6 {
+  padding:0;
+  margin:0;
+}
+.session-page p {
+  line-height: 1.4em;
+  font-size:font-size: 15px;
+}
+
 @media (min-width: 480px) {
   .ui-li-aside {
     width: 20%;
