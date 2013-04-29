@@ -55,23 +55,24 @@
   </script>
 
   <script id="session-details-template" type="text/x-handlebars-template">
-    <div data-role="page" id="{{ uid }}" class="session-page">
+    <div data-role="page" id="{{ talk.uid }}" class="session-page">
       <div data-role="header" data-id="main-nav" data-position="fixed" style="overflow:hidden;">
         <a data-role="button" data-theme="a" data-direction="reverse" data-transition="slide" href="#home" data-icon="arrow-l" class="ui-btn-left">Back</a>
         <h1>RailsConf 2013</h1>
       </div>
       <div data-role="content">
-        <h4>{{starting_at}} - {{ending_at}} {{location}}</h4>
-        <h2>{{title}}</h2>
-        <p><strong>{{ speaker.name }}</strong></p>
+        <h4>{{starting_at}} - {{ending_at}}</h4>
+        <h2>{{talk.title}}</h2>
+        <h6>Location: {{ talk.location }}</h6>
+        <p><strong>{{ talk.speaker.name }}</strong></p>
 
         <div>
-          {{{ description  }}}
+          {{{ talk.description  }}}
         </div>
 
         <div>
           <h3>About the speaker</h3>
-          {{{ speaker.description }}}
+          {{{ talk.speaker.description }}}
         </div>
       </div>
     </div>
@@ -125,7 +126,16 @@
 
         var id = $(this).attr('href');
 
-        $("body").append(sessionDetailsTemplate( findTalk(id.substr(1)) ));
+        var talkToRender = findTalk(id.substr(1));
+        var s = new Date(talkToRender.starting_at).toString();
+        var e = new Date(talkToRender.ending_at).toString();
+        var toRender = sessionDetailsTemplate({
+            starting_at: s.match(/2013 (\d{2}:\d{2})/)[1],
+            ending_at: e.match(/2013 (\d{2}:\d{2})/)[1],
+            talk: talkToRender
+          });
+        console.log(toRender);
+        $("body").append(toRender);
 
         $.mobile.navigate(id);
 
