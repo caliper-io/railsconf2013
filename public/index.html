@@ -9,6 +9,11 @@
   <link rel="stylesheet" href="jquery.mobile.custom.structure.min.css">
   <link rel="stylesheet" href="jquery.mobile.custom.theme.min.css">
   <link rel="stylesheet" href="custom.css">
+  <script>
+   if(window.location.hostname == "caliper-io.github.io" && window.location.pathname !== "/railsconf2013/"){
+     window.location.href = "http://caliper-io.github.io/railsconf2013/";
+   }
+  </script>
 </head>
 <body>
   <div data-role="page" id="home">
@@ -180,7 +185,6 @@
     };
 
     $(document).ready(function() {
-      if(window.location.pathname !== "/railsconf2013/"){ window.location.href = "/railsconf2013/"; }
       new FastClick(document.body);
 
       renderDayList(30);
