@@ -1,11 +1,12 @@
 CACHE MANIFEST
-# v1 - 2013-04-29 15:17
+# v1 - 2013-04-29 19:07
 index.html
 jquery.mobile.custom.structure.min.css
 jquery.mobile.custom.theme.min.css
 custom.css
 jquery-1.9.1.min.js
 jquery.mobile.custom.min.js
+fastclick.min.js
 handlebars-1.0.0.rc.2.js
 data/schedule.js
 images/ajax-loader.gif

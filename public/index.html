@@ -9,10 +9,6 @@
   <link rel="stylesheet" href="jquery.mobile.custom.structure.min.css">
   <link rel="stylesheet" href="jquery.mobile.custom.theme.min.css">
   <link rel="stylesheet" href="custom.css">
-  <script src="jquery-1.9.1.min.js"></script>
-  <script src="jquery.mobile.custom.min.js"></script>
-  <script src="handlebars-1.0.0.rc.2.js"></script>
-  <script src="data/schedule.js"></script>
 </head>
 <body>
   <div data-role="page" id="home">
@@ -85,7 +81,13 @@
     </div>
   </script>
 
-  <script>
+  <script src="jquery-1.9.1.min.js"></script>
+  <script src="jquery.mobile.custom.min.js"></script>
+  <script src="handlebars-1.0.0.rc.2.js"></script>
+  <script src="fastclick.min.js"></script>
+  <script src="data/schedule.js"></script>
+
+  <script type="text/javascript">
     var entryListTemplate = Handlebars.compile($("#entry-list-template").html());
     var talkDividerExample = Handlebars.compile($("#talk-divider-template").html());
     var sessionDetailsTemplate = Handlebars.compile($("#session-details-template").html());
@@ -178,6 +180,8 @@
     };
 
     $(document).ready(function() {
+      new FastClick(document.body);
+
       renderDayList(29);
       renderSessionDetailsPages();
 
@@ -202,6 +206,5 @@
 
     });
   </script>
-
 </body>
 </html>
