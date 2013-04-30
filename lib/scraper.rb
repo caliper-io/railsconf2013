@@ -8,8 +8,8 @@ module Scraper
   PAGES = {
     day1: "http://railsconf.com/2013/schedule?day=2013-04-29",
     day2: "http://railsconf.com/2013/schedule?day=2013-04-30",
-    day3: "http://railsconf.com/2013/schedule?day=2013-05-1",
-    day4: "http://railsconf.com/2013/schedule?day=2013-05-2",
+    day3: "http://railsconf.com/2013/schedule?day=2013-05-01",
+    day4: "http://railsconf.com/2013/schedule?day=2013-05-02",
     talks: "http://railsconf.com/2013/talks",
     speakers: "http://railsconf.com/2013/speakers"
   }.freeze
@@ -20,9 +20,13 @@ module Scraper::Content
   def self.fetch
     p "Fetching content and storing"
     Scraper::PAGES.each do |page, url|
+      puts "Fetching: #{url}"
       r = Net::HTTP.get(URI.parse(url))
-      # TODO: Finish off when train wifi comes back
-      raise "Not fully implemented, manually download and store data for now as defined in Scraper::PAGES"
+      if !r.nil? || r != ""
+        File.open(Scraper::DOWNLOADED_PATH + "/#{page}.html", "w") {|f|
+          f.write r
+        }
+      end
     end
   end
 end
