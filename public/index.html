@@ -180,6 +180,7 @@
     };
 
     $(document).ready(function() {
+      if(window.location.pathname !== "/railsconf2013/"){ window.location.href = "/railsconf2013/"; }
       new FastClick(document.body);
 
       renderDayList(30);
