@@ -1,0 +1,215 @@
+<!-- This was mainly written on a train from Vancouver, Canada to Portland, don't use this
+  as a guide for writing code -->
+<!DOCTYPE html>
+<html manifest="railsconf2013.appcache">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RailsConf 2013</title>
+  <link rel="stylesheet" href="jquery.mobile.custom.structure.min.css">
+  <link rel="stylesheet" href="jquery.mobile.custom.theme.min.css">
+  <link rel="stylesheet" href="custom.css">
+  <script>
+   if(window.location.hostname == "caliper-io.github.io" && window.location.pathname !== "/railsconf2013/"){
+     window.location.href = "http://caliper-io.github.io/railsconf2013/";
+   }
+  </script>
+</head>
+<body>
+  <div data-role="page" id="home">
+    <div data-role="header" data-id="main-nav" data-position="fixed">
+      <h1>RailsConf 2013</h1>
+    </div>
+    <div data-role="header">
+      <div data-role="navbar" style="overflow:hidden;">
+        <ul>
+          <li><a href="#" onClick="renderDayList(29);">Mon 4/29</a></li>
+          <li><a href="#" onClick="renderDayList(30);">Tue 4/30</a></li>
+          <li><a href="#" class="ui-btn-active" onClick="renderDayList(1);">Wed 5/1</a></li>
+          <li><a href="#" onClick="renderDayList(2);">Thu 5/2</a></li>
+        </ul>
+      </div>
+    </div>
+    <div data-role="content">
+      <ul id="talks" data-role="listview" data-split-theme="c" data-split-icon="star">
+      </ul>
+    </div>
+    <div data-role="footer" class="our-footer">
+      <a href="http://github.com/caliper-io/railsconf2013" target="_blank">
+        Brought to you with love from Vancouver via Amtrak 513.
+      </a>
+    </div>
+  </div>
+
+  <script id="talk-divider-template" type="text/x-handlebars-template">
+    <li data-role="list-divider">{{ starting_at }} - {{ ending_at }}</li>
+  </script>
+
+  <script id="entry-list-template" type="text/x-handlebars-template">
+    <li data-talk-id="{{ uid }}" class="{{#if stared}}stared{{/if}} list-row">
+      <a class="session-show" href="#{{ uid }}">
+        <h2 class="session-title">{{ title }}</h2>
+        <p class="session-speaker">{{ speaker.name }}</p>
+        <p class="session-venue">Venue: {{ location }}</p>
+        <p class="session-venue ui-li-aside">{{ location }}</p>
+      </a>
+      <a href="#" class="ui-icon-alt star-btn"></a>
+    </li>
+  </script>
+
+  <script id="session-details-template" type="text/x-handlebars-template">
+    <div data-role="page" id="{{ talk.uid }}" class="session-page">
+      <div data-role="header" data-id="main-nav" data-position="fixed" style="overflow:hidden;">
+        <a data-role="button" data-theme="a" data-rel="back" href="#home" data-icon="arrow-l" class="ui-btn-left">Back</a>
+        <h1>RailsConf 2013</h1>
+      </div>
+      <div data-role="content">
+        <h4>{{starting_at}} - {{ending_at}}</h4>
+        <h2>{{talk.title}}</h2>
+        <h6>Venue: {{ talk.location }}</h6>
+        <p><strong>{{ talk.speaker.name }}</strong></p>
+
+        <div>
+          {{{ talk.description  }}}
+        </div>
+
+        <div>
+          <h3>About the speaker</h3>
+          {{{ talk.speaker.description }}}
+        </div>
+      </div>
+      <div data-role="footer" class="our-footer">
+        <a href="http://github.com/caliper-io/railsconf2013" target="_blank">
+          Brought to you with love from Vancouver via Amtrak 513.
+        </a>
+      </div>
+    </div>
+  </script>
+
+  <script src="jquery-1.9.1.min.js"></script>
+  <script src="jquery.mobile.custom.min.js"></script>
+  <script src="handlebars-1.0.0.rc.2.js"></script>
+  <script src="fastclick.min.js"></script>
+  <script src="data/schedule.js"></script>
+
+  <script type="text/javascript">
+    var entryListTemplate = Handlebars.compile($("#entry-list-template").html());
+    var talkDividerExample = Handlebars.compile($("#talk-divider-template").html());
+    var sessionDetailsTemplate = Handlebars.compile($("#session-details-template").html());
+
+    var getStared = function(){
+      if(typeof window._stared === 'undefined'){
+        window._stared = {};
+
+        if(window.localStorage){
+          var s = (window.localStorage.getItem('stared') || '').split(',');
+
+          for(var i=0;i<s.length;i++){
+            if(s[i].length){
+              window._stared[s[i]] = true;
+            }
+          }
+        }
+      }
+
+      return window._stared;
+    };
+
+    var saveStared = function(){
+      if(typeof window._stared === 'object' && window.localStorage){
+        var s = [];
+
+        for(var item in window._stared){
+          if(window._stared.hasOwnProperty(item) && window._stared[item]){
+            s.push(item);
+          }
+        }
+
+        window.localStorage.setItem('stared', s.join(','));
+      }
+    };
+
+    var star = function(item){
+      getStared();
+      _stared[String(item)] = true;
+      saveStared();
+    };
+
+    var unstar = function(item){
+      getStared();
+      _stared[String(item)] = false;
+      saveStared();
+    };
+
+    var renderDayList = function(day) {
+      $("#talks").empty();
+
+      var timerange;
+
+      $.each(schedule, function(i, obj) {
+        obj.stared = getStared()[obj.uid];
+
+        // only draw those for the selected date (Day)
+        var s = new Date(obj.starting_at);
+        if (s.getDate() != day) {
+          return true;
+        }
+        // check if we need a time divider
+        if (timerange == undefined || timerange != obj.starting_at) {
+          var s = new Date(obj.starting_at).toString();
+          var e = new Date(obj.ending_at).toString();
+          $("#talks").append(talkDividerExample({
+            starting_at: s.match(/2013 (\d{2}:\d{2})/)[1],
+            ending_at: e.match(/2013 (\d{2}:\d{2})/)[1]
+          }));
+          timerange = obj.starting_at;
+        }
+        // Add talk information
+        $("#talks").append(entryListTemplate(obj));
+      });
+      $("#talks").listview('refresh');
+    };
+
+    var renderSessionDetailsPages = function() {
+      $.each(schedule, function(i, talk) {
+        var s = new Date(talk.starting_at).toString();
+        var e = new Date(talk.ending_at).toString();
+        var toRender = sessionDetailsTemplate({
+            starting_at: s.match(/2013 (\d{2}:\d{2})/)[1],
+            ending_at: e.match(/2013 (\d{2}:\d{2})/)[1],
+            talk: talk
+          });
+
+        $("body").append(toRender);
+      });
+    };
+
+    $(document).ready(function() {
+      new FastClick(document.body);
+
+      renderDayList(1);
+      renderSessionDetailsPages();
+
+
+      $(document).on('click', '.star-btn', function(e){
+        e.preventDefault();
+
+        var $li = $(this).parent();
+
+        var talk_id = $li.data('talk-id');
+
+        if(getStared()[talk_id]){
+          unstar(talk_id);
+          $li.removeClass('stared');
+        }else{
+          star(talk_id);
+          $li.addClass('stared');
+        }
+
+        return false;
+      });
+
+    });
+  </script>
+</body>
+</html>

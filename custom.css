@@ -1,0 +1,73 @@
+li.list-row {
+  border-top: 0;
+}
+
+li.list-row a.ui-li-link-alt {
+  border-top: 0;
+  right: -1px;
+}
+
+.session-speaker {
+  font-weight: bold;
+}
+
+.session-venue {
+  display: inline;
+}
+
+.session-venue.ui-li-aside {
+  display: none;
+  font-weight: bold;
+}
+
+/* Session Page */
+.session-page h2, .session-page h4, .session-page h6 {
+  padding:0;
+  margin:0;
+}
+.session-page p {
+  line-height: 1.4em;
+  font-size:font-size: 15px;
+}
+
+.our-footer a {
+  font-size:12px;
+  font-weight:normal;
+  padding:7px 15px;
+  color: rgba(255,255,255,0.7)!important;
+  text-decoration:none;
+  display:block;
+}
+
+@media (min-width: 480px) {
+  .ui-li-aside {
+    width: 20%;
+  }
+
+  .session-venue {
+    display: none;
+  }
+
+  .session-venue.ui-li-aside {
+    display: inline;
+  }
+}
+
+.star-btn * {
+  border: none !important;
+  border-radius: 0 !important;
+  text-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  opacity: 0.6;
+}
+
+.star-btn .ui-btn-inner .ui-btn {
+  background: none !important;
+}
+
+.stared .star-btn * {
+  opacity: 1.0 !important;
+}
